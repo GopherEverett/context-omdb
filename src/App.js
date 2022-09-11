@@ -1,8 +1,8 @@
-import { useState, useContext } from 'react'
 import './App.css';
 import { MovieContext } from './context/movie-context'
-import MovieList from './components/MovieList';
 import useLocalStorage from 'use-local-storage'
+import { useState, useContext, lazy, Suspense } from 'react'
+const MovieList = lazy(() => import('./components/MovieList'));
 
 function App() {
 
@@ -34,7 +34,9 @@ function App() {
         <input type="text" onChange={e => setSearchField(e.target.value)} value={searchField} />
         <button type="submit">Search</button>
       </form>
-      <MovieList searchField={searchField} setSearchField={setSearchField} />
+      <Suspense fallback={<div>loading...</div>}>
+        <MovieList searchField={searchField} setSearchField={setSearchField} />
+      </Suspense>
     </div>
   );
 }
